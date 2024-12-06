@@ -1,0 +1,40 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import ttest_ind
+
+# Raw data
+wt_data = np.array([58, 109, 64, 57])
+mutant_data = np.array([73, 86, 68, 76, 72])
+
+# Calculate means and standard deviations
+wt_mean = np.mean(wt_data)
+wt_std = np.std(wt_data)
+mutant_mean = np.mean(mutant_data)
+mutant_std = np.std(mutant_data)
+
+# Create bar graph with data points
+plt.figure(figsize=(8, 6))
+
+# Bar plot with error bars
+plt.bar(['WT', 'Mutant'], [wt_mean, mutant_mean], yerr=[wt_std, mutant_std], capsize=5, color=['steelblue', 'firebrick'], alpha=0.7)
+
+# Scatter plot for individual data points
+plt.scatter([0] * len(wt_data), wt_data, color='steelblue', edgecolor='black', zorder=2)
+plt.scatter([1] * len(mutant_data), mutant_data, color='firebrick', edgecolor='black', zorder=2)
+
+plt.ylabel('Grip Strength')
+plt.title('Grip Strength Comparison: WT vs. L50R Mutant Mice')
+plt.show()
+
+# Perform t-test
+t_stat, p_value = ttest_ind(wt_data, mutant_data)
+
+print(f"T-statistic: {t_stat:.2f}")
+print(f"P-value: {p_value:.3f}")
+
+# Interpret the results
+alpha = 0.05  # Significance level
+if p_value < alpha:
+    print("The difference in grip strength between WT and L50R mutant mice is statistically significant.")
+else:
+    print("There is no statistically significant difference in grip strength between WT and L50R mutant mice.")
